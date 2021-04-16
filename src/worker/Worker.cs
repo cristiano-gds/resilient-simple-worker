@@ -25,9 +25,18 @@ namespace worker
         {
             while (!stoppingToken.IsCancellationRequested)
             {
+                //Polly policy: automatic retries if occurs specific error 
+                var retryDirectory = Policy.Handle<DirectoryNotFoundException>()
+                    .WaitAndRetry(
+                        5, //number of retries
+                        t => TimeSpan.FromSeconds(10), //interval between retries
+                        onRetry: (exception, TimeSpan, retryCount, context) => {
+                            Console.WriteLine("Attempt to open directory #{0}", retryCount);
+                        }
+                    );
 
                 //Polly policy: automatic retries if occurs specific error 
-                var retry = Policy.Handle<FileNotFoundException>()
+                var retryFile = Policy.Handle<FileNotFoundException>()
                     .WaitAndRetry(
                         5, //number of retries
                         t => TimeSpan.FromSeconds(10), //interval between retries
@@ -43,7 +52,7 @@ namespace worker
                     });
 
                 //Polly policy: combine policies
-                var wrap = Policy.Wrap(fallback, retry);
+                var wrap = Policy.Wrap(fallback, retryFile, retryDirectory);
 
                 wrap.Execute(() => {
                     

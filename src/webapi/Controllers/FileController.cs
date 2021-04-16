@@ -18,7 +18,8 @@ namespace webapi.Controllers
     [Route("api/[controller]")]
     public class FileController : ControllerBase
     {
-        private const string PATHFILE = "./files/simple-file.txt";
+        private const string PATHFOLDER = "./files";
+        private const string PATHFILE = PATHFOLDER + "/simple-file.txt";
         private readonly ILogger<FileController> _logger;
 
         public FileController(ILogger<FileController> logger)
@@ -31,6 +32,9 @@ namespace webapi.Controllers
         {
             if (System.IO.File.Exists(PATHFILE))
                 return BadRequest();
+
+            if(!System.IO.Directory.Exists(PATHFOLDER))
+                System.IO.Directory.CreateDirectory(PATHFOLDER);
 
             System.IO.File.WriteAllText(PATHFILE, $"[{DateTime.Now.ToString()}] Arquivo criado");
 
