@@ -17,3 +17,24 @@ Web APIs can be called by endpoint "http://localhost:5000/api/file". Use these H
 * POST - Create the file if not exists
 * DELETE - Remove the file
 * PUT - Update the content with a new message
+
+
+# Worker Simples Resiliente (PT-Br)
+
+Um simples exemplo de **worker** que procura por novo conteúdo escrito em um arquivo de texto.
+
+Este exemplo também aplica métodos de resiliência como Retry e Fallback usando a biblioteca Polly.
+
+## Como Usar
+
+### Melhor uso
+
+Use VSCode para executar o projeto e o Postman para chamar as APIs para gerenciar as ações no arquivo. Os arquivos launch.json e task.json já estão configurados para executar as WebAPIs e worker paralelamente pelo VSCode.
+
+### Web APIs
+
+Web APIs podem ser chamadas através do endpoint "http://localhost:5000/api/file". Use estes métodos HTTP para manipular o arquivo de texto:
+
+* POST - Cria o arquivo se não existir
+* DELETE - Remove o arquivo
+* PUT - Atualiza o conteúdo do arquivo com uma mensagem enviada por parâmetro
